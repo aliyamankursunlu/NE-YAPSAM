@@ -1,0 +1,28 @@
+const fs=require('fs'); const {JSDOM,VirtualConsole}=require('jsdom');
+const html=fs.readFileSync('/home/user/ne-yapsam.html','utf8');
+const vc=new VirtualConsole();
+const dom=new JSDOM(html,{runScripts:'dangerously',pretendToBeVisual:true,url:'http://localhost/',virtualConsole:vc});
+const w=dom.window;
+setTimeout(()=>{
+  const u=a=>[...new Set(a)].sort();
+  console.log('GAMES p:',u(w.eval('GAMES.map(x=>x.p)')).join(', '));
+  console.log('GAMES s:',u(w.eval('GAMES.map(x=>x.s)')).join(', '));
+  console.log('GAMES g:',u(w.eval('GAMES.map(x=>x.g)')).join(' | '));
+  console.log('GAMES m:',u(w.eval('GAMES.flatMap(x=>x.m)')).join(', '));
+  console.log('\nMOVIES t:',u(w.eval('MOVIES.map(x=>x.t)')).join(', '));
+  console.log('MOVIES l:',u(w.eval('MOVIES.map(x=>x.l)')).join(', '));
+  console.log('MOVIES g:',u(w.eval('MOVIES.flatMap(x=>x.g)')).join(' | '));
+  console.log('MOVIES m:',u(w.eval('MOVIES.flatMap(x=>x.m||[])')).join(', '));
+  console.log('\nMUSIC g:',u(w.eval('MUSIC.map(x=>x.g)')).join(' | '));
+  console.log('MUSIC m:',u(w.eval('MUSIC.flatMap(x=>x.m||[])')).join(', '));
+  console.log('\nFOODS k:',u(w.eval('FOODS.flatMap(x=>x.k)')).join(', '));
+  console.log('FOODS t:',u(w.eval('FOODS.map(x=>x.t)')).join(', '));
+  console.log('FOODS z:',u(w.eval('FOODS.map(x=>x.z)')).join(','),'dk max',w.eval('Math.max(...FOODS.map(x=>x.dk))'));
+  console.log('MOODS_M:',w.eval("typeof MOODS_M!=='undefined'?JSON.stringify(MOODS_M):'yok'"));
+  console.log('\nQUIZ k:',u(w.eval('QUIZ.map(x=>x.k)')).join(', '));
+  console.log('QUIZ d:',u(w.eval('QUIZ.map(x=>x.d)')).join(' | '));
+  console.log('QUIZ z:',u(w.eval('QUIZ.map(x=>x.z)')).join(','),'| o uzunluk:',u(w.eval('QUIZ.map(x=>x.o.length)')).join(','));
+  console.log('\nREGIONS:',u(w.eval('Object.keys(REGIONS)')).join(' | '));
+  console.log('CITIES:',w.eval('CITIES.length'),'| spot:',w.eval('CITIES.reduce((a,c)=>a+c.s.length,0)'));
+  process.exit(0);
+},1200);
